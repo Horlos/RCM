@@ -1,0 +1,18 @@
+﻿<Window x:Class="ForelDisplaying.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="1000">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Button Click="DisplayDefault_Click">Default Data</Button>
+                <Button Click="Cluster_Click">Cluster</Button>
+                <Button Click="Clear_Click">Clear</Button>
+                <TextBox Width="100px" Name="radiusTextBox" TextChanged="RadiusTextBox_OnTextChanged"></TextBox>
+            </StackPanel>
+            <Canvas DockPanel.Dock="Left" Width="500" Name="defaultCanvas"></Canvas>
+            <Label  Background="Black" Width="1"></Label>
+            <Canvas Name="resultCanvas"></Canvas>
+        </DockPanel>
+    </Grid>
+</Window>
