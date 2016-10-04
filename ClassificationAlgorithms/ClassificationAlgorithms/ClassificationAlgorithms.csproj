@@ -50,6 +50,7 @@
     <Compile Include="Forel\ClusteredPoint.cs" />
     <Compile Include="Forel\FileManager.cs" />
     <Compile Include="Forel\ForelAlgorithm.cs" />
+    <Compile Include="Forel\InversedForelAlgorithm.cs" />
     <Compile Include="Forel\Point.cs" />
     <Compile Include="Prim\Algorithm.cs" />
     <Compile Include="Prim\Edge.cs" />

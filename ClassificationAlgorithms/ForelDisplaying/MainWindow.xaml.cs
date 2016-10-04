@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using ClassificationAlgorithms.Forel;
 using Forel;
 
 namespace ForelDisplaying
@@ -14,13 +15,13 @@ namespace ForelDisplaying
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ForelAlgorithm _forelAlgorithm;
+        private readonly InversedForelAlgorithm _forelAlgorithm;
         public IList<Forel.Point> Points { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            _forelAlgorithm = new ForelAlgorithm(2);
+            _forelAlgorithm = new InversedForelAlgorithm();
         }
 
         private void DisplayDefault_Click(object sender, RoutedEventArgs e)
@@ -28,17 +29,7 @@ namespace ForelDisplaying
             var points = FileManager.GetData().ToList();
             foreach (var p in points)
             {
-                Ellipse elipse = new Ellipse
-                {
-                    Fill = new SolidColorBrush(Colors.LightGray),
-                    StrokeThickness = 1,
-                    Stroke = Brushes.Black,
-                    Width = 15,
-                    Height = 15
-                };
-                Canvas.SetTop(elipse, p.Y * 25);
-                Canvas.SetLeft(elipse, p.X * 25);
-                defaultCanvas.Children.Add(elipse);
+                DrawEllipse(defaultCanvas, p.X, p.Y, 15, 15, new SolidColorBrush(Colors.LightGray), 1, 1);
             }
             this.Points = points;
         }
@@ -55,15 +46,18 @@ namespace ForelDisplaying
                 var randomColor = Color.FromRgb(b[0], b[1], b[2]);
                 var color = new SolidColorBrush(randomColor);
                 foreach (var point in cluster.Points)
-                    DrawEllipse(point.X, point.Y, 15, 15, color, 1, 1);
+                {
+                    DrawEllipse(resultCanvas, point.X, point.Y, 15, 15, color, 1, 0.8);
+                }
+
 
                 var centerColor = new SolidColorBrush(randomColor);
                 var center = cluster.Center;
-                DrawEllipse(center.X, center.Y, 5, 5, centerColor, 2, 0.4);
+                DrawEllipse(resultCanvas, center.X, center.Y, 5, 5, centerColor, 2, 0.4);
             }
         }
 
-        private void DrawEllipse(double pointX, double pointY, double width, double height, Brush color, int strokeThickness, double opacity)
+        private void DrawEllipse(Canvas canvas, double pointX, double pointY, double width, double height, Brush color, int strokeThickness, double opacity)
         {
             var elipse = new Ellipse
             {
@@ -76,7 +70,7 @@ namespace ForelDisplaying
             };
             Canvas.SetTop(elipse, pointY * 25);
             Canvas.SetLeft(elipse, pointX * 25);
-            resultCanvas.Children.Add(elipse);
+            canvas.Children.Add(elipse);
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -98,7 +92,7 @@ namespace ForelDisplaying
             var radius = 2d;
             if(double.TryParse(radiusText, out radius))
             {
-                _forelAlgorithm.Radius = radius;
+                //_forelAlgorithm.Radius = radius;
                 Cluster_Click(sender, e);
                 DisplayDefault_Click(sender, e);
             }
